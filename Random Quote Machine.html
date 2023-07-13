@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+    <title>FCC : Random Quote Machine</title>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      charset="UTF-8"
+      href="https://www.gstatic.com/_/translate_http/_/ss/k=translate_http.tr.69JJaQ5G5xA.L.W.O/d=0/rs=AN8SPfpC36MIoWPngdVwZ4RUzeJYZaC7rg/m=el_main_css"
+    />
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+  </head>
+  <body>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        vertical-align: baseline;
+      }
+
+      div {
+        position: relative;
+        z-index: 2;
+        display: block;
+      }
+
+      body {
+        background-color: #333;
+        color: #333;
+        font-family: "Raleway", sans-serif;
+        font-weight: 400;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      #quote-box {
+        border-radius: 3px;
+        position: relative;
+        width: 450px;
+        padding: 40px 50px;
+        display: table;
+        background-color: #fff;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      #quote-box .box-author {
+        width: 450px;
+        height: auto;
+        clear: both;
+        padding-top: 20px;
+        font-size: 1.3em;
+        text-align: right;
+      }
+
+      .fa {
+        font-size: 1em;
+      }
+
+      #quote-box button {
+        float: right;
+      }
+
+      #tweet-quote {
+        float: left;
+        padding: 0px;
+        padding-top: 8px;
+        text-align: center;
+        font-size: 1.2em;
+        margin-right: 5px;
+        height: 30px;
+        width: 40px;
+      }
+
+      #text {
+        font-size: 2em;
+        color: black;
+      }
+
+      #quote-box #new-quote {
+        height: 38px;
+        border: none;
+        border-radius: 3px;
+        color: #fff;
+        background-color: #333;
+        outline: none;
+        font-size: 0.85em;
+        padding: 8px 18px 6px 18px;
+        margin-top: 30px;
+        opacity: 1;
+        cursor: pointer;
+      }
+
+      #tweet-quote {
+        background-color: #333;
+        font: 19.2px;
+        color: #ffffff;
+        margin: 30px 5px 0px 0px;
+        padding: 8px 0px 0px;
+        height: 38px;
+        border-radius: 3px;
+      }
+
+      #fa {
+        font-size: 2em;
+      }
+
+      .box-text {
+        text-align: center;
+      }
+
+      .text-autor-box {
+        opacity: 0;
+        transition: opacity 1.3s ease-in-out;
+        animation: show 1.3s 1;
+        animation-fill-mode: forwards;
+        animation-delay: 0.3s;
+      }
+
+      @keyframes show {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      .footer {
+        text-align: center;
+        padding-top: 0.7em;
+        color: #fff;
+      }
+
+      .fade-in-text {
+        animation: fade-in-text 1.3s ease-in-out;
+      }
+
+      .fade-in {
+        opacity: 0;
+        transition: opacity 1.3s ease-in-out;
+        animation: fade-in-text 1.3s ease-in-out;
+      }
+
+      .fade-in-animation {
+        animation: fade-in-text 1.3s ease-in-out;
+      }
+
+      @keyframes fade-in-text {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      .final-state {
+        opacity: 1 !important;
+      }
+    </style>
+    <div class="container">
+      <div id="quote-box">
+        <div class="text-autor-box">
+          <div class="box-text">
+            <i id="fa" class="fa fa-quote-left"></i>
+            <span id="text" class="fade-in-text"></span>
+          </div>
+          <div class="box-author">
+            <span id="authorMinus">-</span>
+            <span id="author"></span>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <div class="row">
+            <a
+              id="tweet-quote"
+              title="Tweet this quote!"
+              href="twitter.com/intent/tweet"
+              target="_top"
+            >
+              <i class="fa fa-twitter"></i>
+            </a>
+            <button id="new-quote">New quote</button>
+          </div>
+        </div>
+      </div>
+      <div class="footer">IIIWinterIII</div>
+    </div>
+    <script src="script.js"></script>
+    <script>
+      const newQuoteButton = document.getElementById("new-quote");
+      newQuoteButton.addEventListener("click", getQuote);
+      function generateRandomColor() {
+        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+        return "#" + randomColor;
+      }
+
+      window.addEventListener("load", function () {
+        let bodyBackgroundColor = generateRandomColor();
+        document.body.style.transition = "background-color 1.3s ease";
+
+        document.body.style.backgroundColor = bodyBackgroundColor;
+
+        let changeColorButton = document.getElementById("new-quote");
+        changeColorButton.style.transition = "background-color 1.3s ease";
+        changeColorButton.style.backgroundColor = bodyBackgroundColor;
+
+        let changeColorTweet = document.getElementById("tweet-quote");
+        changeColorTweet.style.transition = "background-color 1.3s ease";
+        changeColorTweet.style.backgroundColor = bodyBackgroundColor;
+
+        let textBox = document.getElementById("text");
+        textBox.style.transition = "color 1.3s ease";
+        textBox.style.color = bodyBackgroundColor;
+
+        let autorBox = document.getElementById("author");
+        autorBox.style.transition = "color 1.3s ease";
+        autorBox.style.color = bodyBackgroundColor;
+
+        let faElement = document.getElementById("fa");
+        faElement.style.transition = "color 1.3s ease";
+        faElement.style.color = bodyBackgroundColor;
+
+        let authorMinus = document.getElementById("authorMinus");
+        authorMinus.style.transition = "color 1.3s ease";
+        authorMinus.style.color = bodyBackgroundColor;
+      });
+
+      let changeColorButtonn = document.getElementById("new-quote");
+      let changeColorTweet = document.getElementById("tweet-quote");
+      let textAutorBox = document.getElementById("text-autor-box");
+
+      changeColorButtonn.addEventListener("click", function () {
+        let bodyBackgroundColor = generateRandomColor();
+        document.body.style.transition = "background-color 1.3s ease";
+        document.body.style.backgroundColor = bodyBackgroundColor;
+        changeColorTweet.style.transition = "background-color 1.3s ease";
+        changeColorTweet.style.backgroundColor = bodyBackgroundColor;
+        changeColorButtonn.style.transition = "background-color 1.3s ease";
+        changeColorButtonn.style.backgroundColor = bodyBackgroundColor;
+
+        let textBox = document.getElementById("text");
+        textBox.style.transition = "color 1.3s ease";
+        textBox.style.color = bodyBackgroundColor;
+
+        let autorBox = document.getElementById("author");
+        autorBox.style.transition = "color 1.3s ease";
+        autorBox.style.color = bodyBackgroundColor;
+
+        let faElement = document.getElementById("fa");
+        faElement.style.transition = "color 1.3s ease";
+        faElement.style.color = bodyBackgroundColor;
+
+        let authorMinus = document.getElementById("authorMinus");
+        authorMinus.style.transition = "color 1.3s ease";
+        authorMinus.style.color = bodyBackgroundColor;
+      });
+
+      document.addEventListener("DOMContentLoaded", getQuote);
+
+      async function getQuote() {
+        try {
+          const response = await fetch("https://api.quotable.io/quotes/random");
+          const data = await response.json();
+
+          const quoteText = data[0].content;
+          const quoteAuthor = data[0].author;
+          const quoteTextElement = document.getElementById("text");
+          const quoteAuthorElement = document.getElementById("author");
+          const faElement = document.getElementById("fa");
+          const authorMinus = document.getElementById("authorMinus");
+
+          //TEXT
+          quoteTextElement.classList.remove("fade-in-text");
+          void quoteTextElement.offsetWidth; 
+          quoteTextElement.textContent = quoteText;
+          quoteTextElement.classList.add("fade-in-text");
+
+          //AUTHOR
+          quoteAuthorElement.classList.remove("fade-in-animation");
+          quoteAuthorElement.textContent = quoteAuthor;
+          void quoteAuthorElement.offsetWidth; 
+          quoteAuthorElement.classList.add("fade-in-animation");
+
+          //FA Element
+          faElement.classList.remove("fade-in-animation");
+          void faElement.offsetWidth; 
+          faElement.classList.add("fade-in-animation");
+
+          //MINUS
+          authorMinus.classList.remove("fade-in-animation");
+          void authorMinus.offsetWidth; 
+          authorMinus.classList.add("fade-in-animation");
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    </script>
+  </body>
+</html>
